@@ -27,12 +27,7 @@
 		padding: 1.25em 1.5em;
 		border-bottom: 4px solid var(--red);
 	}
-	header h1 {
-		margin: 0;
-		font-size: 1.25rem;
-		text-transform: uppercase;
-		letter-spacing: -0.01em;
-	}
+	header h1 { margin: 0; font-size: 1.25rem; text-transform: uppercase; letter-spacing: -0.01em; }
 	header p { margin: 0.25em 0 0; color: #cbd5e1; font-size: 0.85rem; }
 	.wrap {
 		max-width: 1400px;
@@ -43,11 +38,7 @@
 		grid-template-columns: 1fr;
 	}
 	@media (min-width: 960px) { .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; } }
-	.panel {
-		background: var(--paper);
-		border: 1px solid var(--line);
-		padding: 1.5em;
-	}
+	.panel { background: var(--paper); border: 1px solid var(--line); padding: 1.5em; }
 	.panel h2 {
 		margin: 0 0 1em;
 		font-size: 0.8rem;
@@ -68,6 +59,7 @@
 		margin-bottom: 0.3em;
 	}
 	label .hint { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--gray); }
+	.row { display: grid; gap: 1em; grid-template-columns: 1fr 1fr; }
 	input, textarea, select {
 		width: 100%;
 		padding: 0.6em 0.7em;
@@ -78,12 +70,7 @@
 	}
 	input:focus, textarea:focus, select:focus { outline: 2px solid var(--red); outline-offset: 0; border-color: var(--red); }
 	textarea { resize: vertical; min-height: 4.5em; }
-	.mode-tone {
-		margin-top: 0.4em;
-		font-size: 0.8rem;
-		color: var(--red);
-		min-height: 1.2em;
-	}
+	.tip { margin-top: 0.4em; font-size: 0.8rem; color: var(--red); min-height: 1.2em; }
 	.out-head {
 		display: flex;
 		justify-content: space-between;
@@ -128,37 +115,39 @@
 <body>
 <header>
 	<h1>Apex Engine — Blog Prompt Builder</h1>
-	<p>Fill the form → copy the prompt → paste it into Claude to get a site-ready MDX draft.</p>
+	<p>Pick a category + format → fill the form → copy the prompt → paste it into Claude for a site-ready MDX draft.</p>
 </header>
 
 <div class="wrap">
 	<section class="panel">
 		<h2>Inputs</h2>
 
-		<label>
-			<span class="lab">Mode</span>
-			<select id="mode">
-				<option value="review">Technical Review — document the machine</option>
-				<option value="culture">Culture Story — heritage &amp; local scene</option>
-				<option value="howto">How-To Guide — practical, step-by-step</option>
-				<option value="market">Market Insight — trends, EVs, value</option>
-			</select>
-			<div class="mode-tone" id="modeTone"></div>
-		</label>
+		<div class="row">
+			<label>
+				<span class="lab">Category <span class="hint">— sets the voice</span></span>
+				<select id="category"></select>
+			</label>
+			<label>
+				<span class="lab">Format <span class="hint">— sets the structure</span></span>
+				<select id="format"></select>
+			</label>
+		</div>
+		<div class="tip" id="catTip"></div>
+		<div class="tip" id="fmtTip" style="color:var(--gray)"></div>
 
 		<label>
 			<span class="lab">Topic <span class="hint">— the specific car / subject</span></span>
-			<input id="topic" type="text" placeholder="e.g. 2018 Toyota Vios as a first car" />
+			<input id="topic" type="text" placeholder="e.g. CALAX RFID transition explained" />
 		</label>
 
 		<label>
 			<span class="lab">Angle <span class="hint">— the one thing this piece proves</span></span>
-			<input id="angle" type="text" placeholder="e.g. Why it's still the safest used first-car buy under PHP 500k" />
+			<input id="angle" type="text" placeholder="e.g. What changed and how to skip the toll lines" />
 		</label>
 
 		<label>
-			<span class="lab">Your insights <span class="hint">— real ownership notes, prices, anecdotes</span></span>
-			<textarea id="insights" placeholder="e.g. Bought mine at 84k km; parts dirt cheap in Bacoor; 14 km/L mixed; aircon weak after 100k km"></textarea>
+			<span class="lab">Your insights <span class="hint">— real notes, prices, anecdotes</span></span>
+			<textarea id="insights" placeholder="e.g. Used my AutoSweep tag at CALAX last week; reloading via GCash; lines worst 6–8am at Silang"></textarea>
 		</label>
 
 		<label>
@@ -167,13 +156,13 @@
 		</label>
 
 		<label>
-			<span class="lab">South Luzon hooks <span class="hint">— optional: routes, floods, meets, prices</span></span>
-			<textarea id="hooks" placeholder="e.g. Daily Imus → Makati via CAVITEX; floods at Bacoor coastal road; weekend Tagaytay runs"></textarea>
+			<span class="lab">South Luzon hooks <span class="hint">— optional</span></span>
+			<textarea id="hooks" placeholder="e.g. Imus → Makati daily via CAVITEX; Bacoor coastal flooding; Tagaytay weekend runs"></textarea>
 		</label>
 
 		<label>
 			<span class="lab">Length override <span class="hint">— optional</span></span>
-			<input id="length" type="text" placeholder="leave blank to use the mode default" />
+			<input id="length" type="text" placeholder="leave blank to use the format default" />
 		</label>
 
 		<label>
@@ -187,17 +176,26 @@
 			<h2>Generated prompt</h2>
 			<button id="copy" type="button">Copy</button>
 		</div>
-		<p class="note"><b>Next:</b> paste this into Claude (claude.ai or Claude Code). In Claude Code inside the site repo, it can also re-scan for fresh internal links. It returns MDX — save to <code>apex-engine/src/content/blog/&lt;slug&gt;.mdx</code>.</p>
+		<p class="note"><b>Next:</b> paste this into Claude (claude.ai or Claude Code). In Claude Code inside the site repo it can also re-scan for fresh internal links. It returns MDX — save to <code>apex-engine/src/content/blog/&lt;slug&gt;.mdx</code>.</p>
 		<pre id="output"></pre>
 	</section>
 </div>
 
 <script>
-	const MODES = {
-		review:  { label: "Technical Review", tone: "Brutally honest, transparent, educational. Document the machine.", structure: "Quick Specs list → drive impression → ownership & running cost → WHAT TO INSPECT before buying → Technical Verdict.", length: "1,500–2,500 words", specCard: true },
-		culture: { label: "Culture Story", tone: '"Street," authentic, passionate. Heritage and the local scene.', structure: "Story-led: historical context, the build/heritage, and the South Luzon scene around it.", length: "1,200–2,000 words", specCard: false },
-		howto:   { label: "How-To Guide", tone: "Practical, friendly, clear. Safety and efficiency.", structure: "Numbered steps, plus a 'Recommended Gear' section using [Product - Affiliate Link Placeholder] markers.", length: "800–1,500 words", specCard: false },
-		market:  { label: "Market Insight", tone: "Optimistic, forward-looking, strategic.", structure: "Trend → local CALABARZON lens → cost/benefit → what it means for buyers here.", length: "1,000–1,800 words", specCard: false },
+	const CATEGORIES = {
+		"jdm-90s":           { label: "90s JDM & Classics", tags: ["JDM", "Classics"], tone: '"Street," authentic, enthusiast-driven. Speak the language of car culture — heritage, builds, late-night runs.', focus: "Heritage, the build/mod scene, why the machine still matters, and the local enthusiast community." },
+		"daily-2000s":       { label: "2000s Daily Drivers", tags: ["Daily Driver"], tone: "Practical, friendly, appreciative — the backbone of Filipino commutes.", focus: "Real-world value, total cost of ownership, reliability, PH parts availability, used-buying advice." },
+		"south-luzon-roads": { label: "South Luzon Roads & Commuting", tags: ["South Luzon", "Commuting"], tone: "Practical and actionable, never a complaint. Apply the pain-points playbook: THE REALITY → THE ROUTE → THE FIX.", focus: "Tollways (SLEX, STAR, MCX, CALAX), RFID, monsoon flooding chokepoints, local enforcement (NCAP, window hours)." },
+		"ev-upcoming":       { label: "EVs & Upcoming Cars", tags: ["EV", "Hybrid"], tone: "Optimistic, forward-looking, genuinely excited — while keeping respect for internal combustion.", focus: "New tech and models, hybrid/PHEV/BEV, efficiency, and the growth of CALABARZON charging infrastructure." },
+		"buying-ownership":  { label: "Buying & Ownership Guides", tags: ["Buying Guide", "Ownership"], tone: "Brutally honest, transparent, educational — the marketplace promise.", focus: "How to inspect a unit, spot hidden defects, decode dealer jargon, avoid lemons, judge real value for money." },
+	};
+
+	const FORMATS = {
+		news:    { label: "News", structure: "Short, timely news piece: what happened → why it matters locally → what to watch/do next.", length: "500–900 words", specCard: false },
+		guide:   { label: "Deep Guide", structure: "Thorough how-to / explainer with clear ## sections and, where useful, numbered steps.", length: "1,200–2,000 words", specCard: false },
+		review:  { label: "Review", structure: "Evaluate a specific car: Quick Specs → drive & ownership impression → what to inspect → Verdict.", length: "1,200–2,000 words", specCard: true },
+		list:    { label: "List / Ranking", structure: "Ranked listicle (e.g. '5 best…'): short intro → numbered entries each with a takeaway → closing.", length: "900–1,500 words", specCard: false },
+		feature: { label: "Feature", structure: "Long-form narrative: open on a scene, weave history + local context, and land a clear point.", length: "1,200–2,200 words", specCard: false },
 	};
 
 	const DEFAULT_LINKS = [
@@ -225,7 +223,6 @@
 		"",
 		"WHO WE ARE: a hybrid of the friendly road-trip neighbor + the tech-savvy younger brother you see at a South Luzon car meet. A trusted peer giving real, unfiltered advice at eye level over coffee at a gas-station pitstop — never lecturing from an editorial tower. Relatable, nostalgic but forward-looking.",
 		"REGION FIRST: filter everything through CALABARZON (Cavite, Laguna, Batangas, Rizal, Quezon) — 'what does this mean for a driver here today?'. No sterile evergreen filler.",
-		"DUAL-TONE RULE: daily drivers (Vios, Mirage, City…) get practical, celebratory respect; JDM & classics get the 'street,' enthusiast voice.",
 		"PAIN-POINTS PLAYBOOK: when a regional issue comes up (SLEX/CALAX/STAR tolls, RFID, monsoon flooding, NCAP/window hours), answer The Reality → The Route → The Fix. Actionable, never a complaint.",
 		"ICE vs EV: openly optimistic about EV/Hybrid/PHEV growth AND in love with internal combustion. No gatekeeping; celebrate both.",
 		"TRANSPARENCY CORE: value-for-money first (not 0–100 times). Teach readers to inspect cars, spot hidden defects, decode dealer jargon, avoid lemons. Reliability is a relationship — owner care + PH parts availability + practical upkeep. Back claims with evidence.",
@@ -240,13 +237,12 @@
 		'description: "1–2 sentence meta description"',
 		'pubDate: "<today\'s date, e.g. June 19, 2026>"',
 		'heroImage: "../../assets/blog-placeholder-1.jpg"',
-		'tags: ["Make", "Make Model"]',
+		'tags: ["<category tags>", "Make", "Make Model"]',
 		"---",
 		"",
 		"import { Figure, Split, Gallery, Pullquote } from '../../components/editorial';",
 		"import img1 from '../../assets/blog-placeholder-2.jpg';",
 		"import img2 from '../../assets/blog-placeholder-3.jpg';",
-		"import img3 from '../../assets/blog-placeholder-4.jpg';",
 		"",
 		"Short intro paragraph in the brand voice (NO H1 — the layout adds the title).",
 		"",
@@ -261,18 +257,16 @@
 		"</Split>",
 		"{/* TODO: replace placeholder with a real photo in src/assets/blog/ */}",
 		"",
-		'<Pullquote cite="...">One memorable line.</Pullquote>',
-		"",
-		"## Verdict / closing",
+		"## Closing",
 		"...",
 		"",
-		"RULES: one full-width hero + 1–2 supporting Figure/Split (each followed by the TODO marker); use Gallery if 3+ angles help. Insert 2–5 internal links using ONLY the provided link targets — never invent a URL. pubDate = today. Localize for the Philippines.",
+		"RULES: one full-width hero + 1–2 supporting Figure/Split (each followed by the TODO marker); use Gallery if 3+ angles help. Insert 2–5 internal links using ONLY the provided link targets — never invent a URL. Tags must include the category's default tags plus specific make/model tags. pubDate = today. Localize for the Philippines.",
 	].join("\n");
 
 	const CHECKLIST = [
 		"Before returning, self-check:",
+		"- Voice matches the chosen CATEGORY; structure matches the chosen FORMAT",
 		"- Reads like a trusted peer at eye level, not a brand or salesman",
-		"- Correct dual-tone for the subject (daily driver vs JDM)",
 		"- At least one concrete South Luzon hook (route, flood point, price, meet)",
 		"- At least one 'what to inspect / how to verify' transparency moment",
 		"- 2–5 real internal links; zero invented URLs",
@@ -281,27 +275,30 @@
 	].join("\n");
 
 	const $ = (id) => document.getElementById(id);
-	const fields = ["mode", "topic", "angle", "insights", "models", "hooks", "length", "links"];
-
-	function val(id) { return $(id).value.trim(); }
+	const fields = ["category", "format", "topic", "angle", "insights", "models", "hooks", "length", "links"];
+	const val = (id) => $(id).value.trim();
 
 	function buildPrompt() {
-		const m = MODES[$("mode").value];
-		const length = val("length") || m.length;
+		const c = CATEGORIES[$("category").value];
+		const f = FORMATS[$("format").value];
+		const length = val("length") || f.length;
+		const tags = c.tags.join(", ") + (val("models") ? ", " + val("models") : "");
 		const lines = [];
 		lines.push("[ROLE & VOICE]");
 		lines.push(BRAND_VOICE);
 		lines.push("");
 		lines.push("[TASK]");
-		lines.push("Write a " + m.label + " blog article for Apex Engine.");
-		lines.push("Tone: " + m.tone);
-		lines.push("Structure: " + m.structure);
+		lines.push("Write a " + f.label + ' for the "' + c.label + '" category of the Apex Engine blog.');
+		lines.push("Category focus: " + c.focus);
+		lines.push("Tone for this category: " + c.tone);
+		lines.push("Format / structure: " + f.structure);
 		lines.push("Length: " + length);
-		if (m.specCard) lines.push("Also import VehicleSpecCard from '../../components/VehicleSpecCard.astro' and include one <VehicleSpecCard data={{ ... }} />.");
+		lines.push("Suggested tags (include + add specifics): " + tags);
+		if (f.specCard) lines.push("Also import VehicleSpecCard from '../../components/VehicleSpecCard.astro' and include one <VehicleSpecCard data={{ ... }} />.");
 		lines.push("");
 		lines.push("Topic: " + (val("topic") || "(fill in the topic)"));
 		if (val("angle")) lines.push("Angle / the point this proves: " + val("angle"));
-		if (val("insights")) lines.push("My real insights to weave in (use these, do not invent facts): " + val("insights"));
+		if (val("insights")) lines.push("My real insights (use these, do not invent facts): " + val("insights"));
 		if (val("models")) lines.push("Cars to anchor / internal links: " + val("models"));
 		if (val("hooks")) lines.push("South Luzon hooks to include: " + val("hooks"));
 		lines.push("");
@@ -319,11 +316,19 @@
 	}
 
 	function render() {
-		$("modeTone").textContent = MODES[$("mode").value].tone;
+		$("catTip").textContent = CATEGORIES[$("category").value].tone;
+		const f = FORMATS[$("format").value];
+		$("fmtTip").textContent = f.structure + "  (" + f.length + ")";
 		$("output").textContent = buildPrompt();
 	}
 
+	function fill(sel, obj) {
+		$(sel).innerHTML = Object.keys(obj).map((k) => '<option value="' + k + '">' + obj[k].label + "</option>").join("");
+	}
+
 	function init() {
+		fill("category", CATEGORIES);
+		fill("format", FORMATS);
 		$("links").value = DEFAULT_LINKS;
 		fields.forEach((id) => $(id).addEventListener("input", render));
 		$("copy").addEventListener("click", async () => {

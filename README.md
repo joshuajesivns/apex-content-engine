@@ -1,15 +1,16 @@
 # Apex Content Engine
 
-A standalone AI content generator for **every Apex Engine vertical** — editorial
-blog posts, model catalog entries, and marketplace listing write-ups.
+An AI **blog article** generator for Apex Engine. You pick a **category** (which
+sets the voice & focus) and a **format** (which sets the structure & length),
+give it a topic, and it produces a **Word-doc draft** with internal links and
+image slots — ready to review before it goes up on the site.
 
-Each run produces a **Word document** (for review/approval), generates **images
-separately** into an output folder, and **auto-inserts internal links** to real
-pages on the live site. Brand identity, tone, and NAP are fixed in
-`src/brand.js` (single brand — edit there).
+Brand identity, tone, and NAP are fixed in `src/brand.js` (single brand). The
+pipeline lives in `src/engine.js`, decoupled from the CLI so a web form can wrap
+it later.
 
-> CLI today; the generation logic lives in `src/engine.js`, decoupled from the
-> CLI so a web form can wrap it next without rewriting anything.
+> This tool is **blog/article generation only.** (Model-catalog and listing
+> generation were removed — the engine is focused on the blog.)
 
 ## Setup
 
@@ -18,62 +19,69 @@ npm install
 cp .env.example .env        # then edit .env
 ```
 
-Set in `.env`:
-
+Key `.env` values:
 - `OPENAI_API_KEY` — required to generate (not needed for `--dry-run`)
-- `APEX_SITE_DIR` — absolute path to the website repo (e.g. the `apex-engine`
-  folder). Enables internal linking by scanning its blog/model/listing pages.
-- `APEX_SITE_URL` — public base URL for the internal hyperlinks
-- `APEX_MODEL` / `APEX_IMAGE_MODEL` / `APEX_IMAGE_SIZE` — optional overrides
+- `APEX_SITE_DIR` — absolute path to the website repo (the `apex-engine` folder).
+  Enables internal linking by scanning its blog/model/listing pages.
+- `APEX_SITE_URL`, `APEX_MODEL`, `APEX_IMAGE_MODEL`, `APEX_IMAGE_SIZE` — optional
 
 ## Usage
 
 ```bash
-# Interactive — pick a vertical, then answer prompts
+# Interactive — pick category, then format, then answer prompts
 npm run generate
 
-# Non-interactive (scriptable for daily/batch runs)
-node src/index.js --vertical blog --mode review --topic "2018 Toyota Vios ownership review"
-node src/index.js --vertical models --make Toyota --model Innova
-node src/index.js --vertical listings --make Nissan --model "Skyline GT-R" --year 1999
+# Non-interactive (scriptable)
+node src/index.js --category jdm-90s --format feature --topic "Why the AE86 still owns Tagaytay"
+node src/index.js --category south-luzon-roads --format guide  --topic "CALAX RFID, explained"
+node src/index.js --category ev-upcoming --format news --topic "BYD Sealion 6 lands in PH"
 
-# Preview the exact prompt + internal-link map without spending tokens
-node src/index.js --vertical blog --mode market --topic "EVs in South Luzon" --dry-run
+# Preview the prompt + internal-link map without spending tokens
+node src/index.js --category buying-ownership --format guide --topic "How to inspect a used Vios" --dry-run
 
 # Generate the doc but skip images
-node src/index.js --vertical models --make Honda --model Civic --no-images
+node src/index.js --category daily-2000s --format review --topic "2008 Honda City review" --no-images
 ```
 
-## Verticals
+## Categories (set the voice)
 
-| Vertical   | Modes                                   | Produces |
-|------------|-----------------------------------------|----------|
-| `blog`     | review · culture · howto · market       | Long-form article |
-| `models`   | —                                       | Quick Specs + buying guide |
-| `listings` | —                                       | Specs + description + technical audit |
+| key | category | voice |
+|-----|----------|-------|
+| `jdm-90s` | 90s JDM & Classics | "Street," authentic, enthusiast |
+| `daily-2000s` | 2000s Daily Drivers | Practical, appreciative, value-led |
+| `south-luzon-roads` | South Luzon Roads & Commuting | Actionable — Reality → Route → Fix |
+| `ev-upcoming` | EVs & Upcoming Cars | Optimistic, forward-looking |
+| `buying-ownership` | Buying & Ownership Guides | Brutally honest, educational |
+
+Add or rename one by editing `src/categories.js` — nothing else changes.
+
+## Formats (set the structure)
+
+| key | format | length |
+|-----|--------|--------|
+| `news` | News | 500–900 words |
+| `guide` | Deep Guide | 1,200–2,000 words |
+| `review` | Review | 1,200–2,000 words |
+| `list` | List / Ranking | 900–1,500 words |
+| `feature` | Feature | 1,200–2,200 words |
+
+Edit `src/formats.js` to adjust.
 
 ## Output
 
 ```
 output/
-  blog/<slug>.docx
-  models/<slug>.docx
-  listings/<slug>.docx
-  images/<slug>/<image-id>.png      # one per image slot in the doc
+  blog/<category>/<slug>.docx     # the draft, filed under its category
+  images/<slug>/<image-id>.png    # one per image slot in the doc
 ```
 
-- **Internal links** appear as real hyperlinks in the Word doc, pointing at
-  existing pages found in the site repo (`/blog/…`, `/models/…`, `/listings/…`).
-- **Image slots** are written into the doc as labeled placeholders
-  (`[ IMAGE: hero ] …`) and the matching generated `.png` is saved under
-  `output/images/<slug>/` for you to place manually.
+Internal links become real hyperlinks; image slots are labeled placeholders with
+the matching generated `.png` saved alongside for you to place.
 
-## How it works
+## Also in this repo (Claude-run builders)
 
-`src/engine.js` runs the pipeline: build the internal-link map from the site
-repo → build the vertical's prompt → call the text model → parse the Markdown →
-generate images for each slot → render the `.docx`.
+If you'd rather generate **through Claude** (no API key) and get site-ready MDX:
+- `prompts/blog-prompt-builder.md` — fill the inputs, ask Claude to "run the blog builder"
+- `web/index.html` — a self-contained form that assembles the prompt to paste into Claude
 
-Adding a vertical = drop a module in `src/verticals/` exporting
-`{ key, label, description, modes, inputs, buildPrompt, slug, title }` and
-register it in `src/verticals/index.js`.
+Both use the same categories, formats, and brand voice.

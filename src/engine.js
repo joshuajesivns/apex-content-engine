@@ -6,10 +6,11 @@ import { writeDocx } from './docx.js';
 import { generateImages } from './images.js';
 import { getConfig } from './config.js';
 import { stripFences } from './util.js';
+import * as blog from './blog.js';
 
-// Orchestrates a full generation. Kept UI-agnostic so a web form can call it
-// exactly like the CLI does. Returns a result object describing what happened.
-export async function runGeneration(vertical, ctx, opts = {}) {
+// Generates one blog article. UI-agnostic (CLI or a future web form call it the
+// same way). ctx = { category, format, topic, angle?, insights?, models?, hooks?, length? }
+export async function runGeneration(ctx, opts = {}) {
 	const cfg = getConfig();
 
 	const links = buildLinkMap(cfg.siteDir, cfg.siteUrl);
@@ -18,16 +19,15 @@ export async function runGeneration(vertical, ctx, opts = {}) {
 		? linkMapForPrompt(links)
 		: '(no site repo configured — do not invent internal links)';
 
-	const prompt = vertical.buildPrompt(ctx);
+	const prompt = blog.buildPrompt(ctx);
 
 	if (opts.dryRun) {
-		return { dryRun: true, prompt, links, vertical: vertical.key };
+		return { dryRun: true, prompt, links };
 	}
 
 	const raw = stripFences(await complete(prompt));
 
-	// Optional leading "TITLE: ..." line overrides the fallback title.
-	let title = vertical.title(ctx);
+	let title = blog.title(ctx);
 	let body = raw;
 	const tm = raw.match(/^\s*TITLE:\s*(.+?)\s*(?:\n|$)/i);
 	if (tm) {
@@ -36,9 +36,8 @@ export async function runGeneration(vertical, ctx, opts = {}) {
 	}
 
 	const blocks = parseMarkdown(body);
-
-	const slug = vertical.slug(ctx);
-	const outDir = path.join(cfg.outputDir, vertical.key);
+	const slug = blog.slug(ctx);
+	const outDir = path.join(cfg.outputDir, blog.outSubdir(ctx));
 	const imgDir = path.join(cfg.outputDir, 'images', slug);
 
 	const slots = blocks.filter((b) => b.type === 'image');
@@ -51,13 +50,7 @@ export async function runGeneration(vertical, ctx, opts = {}) {
 	}
 
 	const outPath = path.join(outDir, `${slug}.docx`);
-	await writeDocx({
-		title,
-		subtitle: vertical.subtitle ? vertical.subtitle(ctx) : undefined,
-		meta: vertical.meta ? vertical.meta(ctx) : [],
-		blocks,
-		outPath,
-	});
+	await writeDocx({ title, subtitle: blog.subtitle(ctx), meta: [], blocks, outPath });
 
 	return { outPath, imgDir, images, slots, links, title, blocks, content: raw };
 }

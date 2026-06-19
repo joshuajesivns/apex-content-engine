@@ -4,18 +4,22 @@ A fill-in template you run **through Claude** (no API key needed). Fill the
 `INPUTS` block, tell Claude "run the blog builder," and it returns a site-ready
 **MDX draft** you can drop into `apex-engine/src/content/blog/`.
 
+You choose a **category** (sets the voice & focus) and a **format** (sets the
+structure & length).
+
 ---
 
 ## ▶ INPUTS (fill these, then ask Claude to run)
 
 ```yaml
-mode:        # review | culture | howto | market   (see Modes below)
-topic:       # the specific car / subject, e.g. "2018 Toyota Vios as a first car"
-angle:       # the one thing this piece argues or proves (a real POV, not "an overview")
+category:    # jdm-90s | daily-2000s | south-luzon-roads | ev-upcoming | buying-ownership
+format:      # news | guide | review | list | feature
+topic:       # the specific car / subject, e.g. "CALAX RFID transition explained"
+angle:       # the one thing this piece argues or proves
 insights:    # YOUR human takeaways — ownership notes, prices seen, real anecdotes
 models:      # car make/model(s) to anchor internal links, e.g. Toyota Vios
 local_hooks: # South Luzon specifics to weave in (routes, floods, meets, prices) — optional
-length:      # optional override; otherwise use the mode default
+length:      # optional override; otherwise use the format default
 ```
 
 ---
@@ -27,38 +31,47 @@ neighbor + the tech-savvy younger brother. A trusted peer at eye level, talking
 over coffee at a gas-station pitstop — never lecturing from an editorial tower.
 Relatable, nostalgic but forward-looking, grounded in everyday reality.
 
-- **Region first:** filter everything through CALABARZON (Cavite, Laguna,
-  Batangas, Rizal, Quezon). Ask "what does this mean for a driver here today?"
-- **Dual-tone rule:** daily drivers (Vios, Mirage, City…) get practical,
-  celebratory respect; JDM & classics get the "street," enthusiast voice.
-- **Pain-points playbook:** when a regional issue comes up (SLEX/CALAX/STAR
-  tolls, RFID, monsoon flooding chokepoints, NCAP/window-hours), answer
-  **The Reality → The Route → The Fix.** Make it actionable, never a complaint.
-- **ICE vs EV:** openly optimistic about EV/Hybrid/PHEV growth *and* in love
-  with internal combustion. No gatekeeping. Celebrate both.
-- **Transparency core:** value-for-money first (not 0–100 times). Teach readers
-  to inspect cars, spot hidden defects, decode dealer jargon, avoid lemons.
-  Reliability is a relationship — owner care + PH parts availability + practical
-  upkeep. Back claims with evidence.
+- **Region first:** filter through CALABARZON (Cavite, Laguna, Batangas, Rizal,
+  Quezon) — "what does this mean for a driver here today?"
+- **Pain-points playbook:** for road/commuting issues, answer **Reality → Route
+  → Fix.** Actionable, never a complaint.
+- **ICE vs EV:** optimistic about EV/Hybrid/PHEV *and* in love with internal
+  combustion. No gatekeeping.
+- **Transparency core:** value-for-money first. Teach readers to inspect cars,
+  spot defects, decode dealer jargon, avoid lemons. Reliability is a relationship.
 - **Don't:** AI fluff ("In the world of…", "crucial", "game changer", "in
-  conclusion", "elevate", "unleash"), salesman hype, generic evergreen filler.
+  conclusion", "elevate", "unleash"), salesman hype, generic filler.
 
 ---
 
-## 🧩 Modes
+## 🗂 Categories (pick one — it sets the voice & focus)
 
-| mode | tone | structure / length |
-|------|------|--------------------|
-| `review`  | Brutally honest, transparent, educational. Document the machine. | Quick Specs list → drive impression → ownership/cost → **what to inspect** → Technical Verdict. 1,500–2,500 words. |
-| `culture` | "Street," authentic, passionate. Heritage + local scene. | Story-led, historical context, South Luzon scene. 1,200–2,000 words. |
-| `howto`   | Practical, friendly, clear. Safety + efficiency. | Numbered steps + a "Recommended Gear" section with `[Product - Affiliate Link Placeholder]`. 800–1,500 words. |
-| `market`  | Optimistic, forward-looking, strategic. | Trend → local lens → cost/benefit → what it means for CALABARZON buyers. 1,000–1,800 words. |
+| category | voice | focus |
+|----------|-------|-------|
+| `jdm-90s` | "Street," authentic, enthusiast | Heritage, builds, why it still matters, the local scene |
+| `daily-2000s` | Practical, appreciative | Value, cost of ownership, reliability, used-buying |
+| `south-luzon-roads` | Actionable (Reality → Route → Fix) | Tolls (SLEX/STAR/MCX/CALAX), RFID, floods, NCAP |
+| `ev-upcoming` | Optimistic, forward-looking | New tech/models, hybrids, efficiency, charging infra |
+| `buying-ownership` | Brutally honest, educational | Inspecting units, spotting defects, dealer jargon, value |
+
+## 🧱 Formats (pick one — it sets the structure)
+
+| format | structure | length |
+|--------|-----------|--------|
+| `news` | What happened → why it matters locally → what to watch next | 500–900 words |
+| `guide` | Thorough how-to/explainer, clear sections, numbered steps where useful | 1,200–2,000 words |
+| `review` | Quick Specs → drive & ownership → what to inspect → Verdict | 1,200–2,000 words |
+| `list` | Ranked listicle: intro → numbered entries with takeaways → closing | 900–1,500 words |
+| `feature` | Long-form narrative: open on a scene, weave history + local context | 1,200–2,200 words |
+
+For a `review`, also `import VehicleSpecCard from '../../components/VehicleSpecCard.astro';`
+and include one `<VehicleSpecCard data={{ ... }} />`.
 
 ---
 
 ## 📤 Output format (site-ready MDX)
 
-Return **only** the MDX (no code fences around it), in this exact shape:
+Return **only** the MDX (no code fences around it), in this shape:
 
 ```mdx
 ---
@@ -66,50 +79,46 @@ title: "SEO-optimized title"
 description: "1–2 sentence meta description"
 pubDate: "Month DD, YYYY"
 heroImage: "../../assets/blog-placeholder-1.jpg"
-tags: ["Make", "Make Model"]
+tags: ["<category tags>", "Make", "Make Model"]
 ---
 
 import { Figure, Split, Gallery, Pullquote } from '../../components/editorial';
 import img1 from '../../assets/blog-placeholder-2.jpg';
 import img2 from '../../assets/blog-placeholder-3.jpg';
-import img3 from '../../assets/blog-placeholder-4.jpg';
 
-Short, punchy intro paragraph in the brand voice (no H1 — the layout adds it).
+Short, punchy intro in the brand voice (no H1 — the layout adds it).
 
 <Figure src={img1} width="full" caption="..." credit="Apex Engine" />
 {/* TODO: replace placeholder with a real photo in src/assets/blog/ */}
 
 ## Section heading
-Body... with a natural internal link like [the Toyota Vios catalog page](/models/toyota-vios).
+Body... with an internal link like [the Vios catalog page](/models/toyota-vios).
 
 <Split image={img2} side="right">
-Pair an image with analysis. Alternate side="left"/"right".
+Pair an image with analysis. Alternate side.
 </Split>
 {/* TODO: replace placeholder with a real photo in src/assets/blog/ */}
 
-<Pullquote cite="...">One memorable line.</Pullquote>
-
-## Verdict / closing
+## Closing
 ...
 ```
 
-**Rules when filling it:**
-- **Internal links:** use real, existing site paths only. Before running, scan
-  `apex-engine/src/content/blog`, `…/models`, and `src/data/listings.ts` for
-  current pages; link `/blog/<id>`, `/models/<id>`, `/listings/<id>`. Insert
-  2–5 where genuinely relevant. Never invent a URL.
-- **Images:** one full-width hero near the top + 1–2 supporting `Figure`/`Split`,
-  each followed by the `{/* TODO… */}` marker. Use `Gallery` if 3+ angles help.
-- **For `review` mode:** also `import VehicleSpecCard from '../../components/VehicleSpecCard.astro';`
-  and include one `<VehicleSpecCard data={{ ... }} />`.
+**Rules:**
+- **Apply the chosen category's voice + the format's structure.**
+- **Tags:** include the category's default tags plus specific make/model tags.
+- **Internal links:** real existing paths only. Before running, scan
+  `apex-engine/src/content/blog`, `…/models`, and `src/data/listings.ts`; link
+  `/blog/<id>`, `/models/<id>`, `/listings/<id>`. 2–5 where relevant. Never invent.
+- **Images:** one full-width hero + 1–2 supporting `Figure`/`Split`, each followed
+  by the `{/* TODO… */}` marker. Use `Gallery` for 3+ angles.
 - `pubDate` = today's date. Localize everything for the Philippines.
 
 ---
 
 ## ✅ Quality checklist (Claude self-checks before returning)
 
-- [ ] Voice reads like a trusted peer at eye level, not a brand or a salesman
-- [ ] Correct dual-tone applied for the subject (daily driver vs JDM)
+- [ ] Voice matches the chosen **category**; structure matches the chosen **format**
+- [ ] Reads like a trusted peer at eye level, not a brand or a salesman
 - [ ] At least one concrete South Luzon hook (route, flood point, price, meet)
 - [ ] Transparency: at least one "what to inspect / how to verify" moment
 - [ ] 2–5 real internal links; zero invented URLs
@@ -122,6 +131,6 @@ Pair an image with analysis. Alternate side="left"/"right".
 
 > "Run the blog builder with the INPUTS above."
 
-Claude will scan the site for link targets, generate the draft, run the
-checklist, and return the MDX. Save it as
-`apex-engine/src/content/blog/<slug>.mdx`, swap the placeholder images, and push.
+Claude scans the site for link targets, generates the draft, runs the checklist,
+and returns the MDX. Save it as `apex-engine/src/content/blog/<slug>.mdx`, swap
+the placeholder images, and push.

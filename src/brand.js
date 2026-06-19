@@ -1,8 +1,7 @@
 // Apex Engine — Brand Identity & Editorial Voice.
-// This is the SINGLE SOURCE OF TRUTH. systemPrompt() is injected into every
-// vertical's generation prompt (blog, models, listings), so all content shares
-// one persona, one stance, one set of rules. Edit here to change the voice
-// everywhere.
+// This is the SINGLE SOURCE OF TRUTH. systemPrompt() is injected into the blog
+// generation prompt for every category + format, so all articles share one
+// persona, one stance, one set of rules. Edit here to change the voice everywhere.
 export const BRAND = {
 	name: 'Apex Engine',
 	website: 'https://autowebsite-beta.vercel.app',
