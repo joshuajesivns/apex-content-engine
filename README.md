@@ -83,6 +83,7 @@ the matching generated `.png` saved alongside for you to place.
 
 If you'd rather generate **through Claude** (no API key) and get site-ready MDX:
 - `prompts/blog-prompt-builder.md` — fill the inputs, ask Claude to "run the blog builder"
-- `web/index.html` — a self-contained form that assembles the prompt to paste into Claude
+- `docs/index.html` — a self-contained form that assembles the prompt to paste into Claude.
+  Published via GitHub Pages: **https://joshuajesivns.github.io/apex-content-engine/**
 
 Both use the same categories, formats, and brand voice.
