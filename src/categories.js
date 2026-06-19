@@ -37,6 +37,13 @@ export const CATEGORIES = [
 		tone: 'Brutally honest, transparent, educational — the marketplace promise.',
 		focus: 'How to inspect a unit, spot hidden defects, decode dealer jargon, avoid lemons, and judge real value for money.',
 	},
+	{
+		key: 'pms-maintenance',
+		label: 'PMS & Maintenance Guides',
+		tags: ['PMS', 'Maintenance'],
+		tone: 'Simple, friendly, and reassuring — demystify upkeep for everyday owners. Plain language, decode the jargon, no gatekeeping.',
+		focus: 'Preventive Maintenance Service (PMS) intervals and what each one covers, casa vs trusted shop vs DIY, fluids/filters/belts/brakes, realistic peso costs, what owners can safely check themselves, and how PH heat, traffic, and floods affect the schedule.',
+	},
 ];
 
 export const categoryByKey = Object.fromEntries(CATEGORIES.map((c) => [c.key, c]));

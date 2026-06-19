@@ -52,6 +52,7 @@ node src/index.js --category daily-2000s --format review --topic "2008 Honda Cit
 | `south-luzon-roads` | South Luzon Roads & Commuting | Actionable — Reality → Route → Fix |
 | `ev-upcoming` | EVs & Upcoming Cars | Optimistic, forward-looking |
 | `buying-ownership` | Buying & Ownership Guides | Brutally honest, educational |
+| `pms-maintenance` | PMS & Maintenance Guides | Simple, friendly, demystifying |
 
 Add or rename one by editing `src/categories.js` — nothing else changes.
 

@@ -12,7 +12,7 @@ structure & length).
 ## ▶ INPUTS (fill these, then ask Claude to run)
 
 ```yaml
-category:    # jdm-90s | daily-2000s | south-luzon-roads | ev-upcoming | buying-ownership
+category:    # jdm-90s | daily-2000s | south-luzon-roads | ev-upcoming | buying-ownership | pms-maintenance
 format:      # news | guide | review | list | feature
 topic:       # the specific car / subject, e.g. "CALAX RFID transition explained"
 angle:       # the one thing this piece argues or proves
@@ -53,6 +53,7 @@ Relatable, nostalgic but forward-looking, grounded in everyday reality.
 | `south-luzon-roads` | Actionable (Reality → Route → Fix) | Tolls (SLEX/STAR/MCX/CALAX), RFID, floods, NCAP |
 | `ev-upcoming` | Optimistic, forward-looking | New tech/models, hybrids, efficiency, charging infra |
 | `buying-ownership` | Brutally honest, educational | Inspecting units, spotting defects, dealer jargon, value |
+| `pms-maintenance` | Simple, friendly, demystifying | PMS intervals, casa vs DIY, fluids/filters/brakes, peso costs |
 
 ## 🧱 Formats (pick one — it sets the structure)
 
