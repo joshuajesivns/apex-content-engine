@@ -31,6 +31,10 @@ neighbor + the tech-savvy younger brother. A trusted peer at eye level, talking
 over coffee at a gas-station pitstop — never lecturing from an editorial tower.
 Relatable, nostalgic but forward-looking, grounded in everyday reality.
 
+- **Language:** write the **body in natural Taglish** (English-dominant — the way
+  South Luzon car people actually talk, never forced). Keep **titles, meta
+  descriptions, and section headings in keyword-friendly English** so it still
+  ranks. Technical terms, model names, and numbers stay as-is.
 - **Region first:** filter through CALABARZON (Cavite, Laguna, Batangas, Rizal,
   Quezon) — "what does this mean for a driver here today?"
 - **Pain-points playbook:** for road/commuting issues, answer **Reality → Route

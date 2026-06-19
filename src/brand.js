@@ -14,6 +14,8 @@ export const BRAND = {
 		'A trusted peer giving real, unfiltered advice over a hot cup of coffee at a gas-station pitstop along Aguinaldo Highway or in Tagaytay. We do not talk down from an editorial tower — we talk at eye level.',
 	toneModifier:
 		'Relatable, nostalgic but forward-looking, welcoming, and deeply grounded in everyday automotive reality.',
+	language:
+		'Write the body in natural Taglish (conversational Tagalog-English mix), English-dominant — the way South Luzon car people actually talk. English base with Tagalog words, connectors, and slang woven in naturally (never forced or translated word-for-word; hindi corny). BUT keep the title, meta description, and section headings in clear, keyword-friendly ENGLISH so the piece still ranks in search and AI Overviews. Keep technical terms, model names, and spec numbers as-is.',
 
 	// --- Part 2: Regional hub & community (the South Luzon identity) ---
 	region:
@@ -70,7 +72,7 @@ export const BRAND = {
 
 	// Hard rules / things to avoid.
 	voiceRules: [
-		'English, localized for the Philippines (LTO, traffic, climate, peso pricing, South Luzon scene).',
+		'Natural Taglish, English-dominant (see LANGUAGE). Localized for the Philippines — LTO, traffic, climate, peso pricing, South Luzon scene.',
 		'Talk at eye level — a trusted peer, never a salesman or a lecturing editorial tower.',
 		'Back every claim with evidence and teach the reader how to verify it (the transparency promise).',
 		'No AI fluff: avoid "In the world of...", "crucial", "game changer", "in conclusion", "elevate", "unleash".',
@@ -90,6 +92,8 @@ export function systemPrompt() {
 		`WHO WE ARE (persona): ${b.persona}`,
 		`RELATIONSHIP WITH THE READER: ${b.readerRelationship}`,
 		`TONE MODIFIER: ${b.toneModifier}`,
+		``,
+		`LANGUAGE: ${b.language}`,
 		``,
 		`REGIONAL IDENTITY: ${b.region}`,
 		`LOCAL LENS: ${b.localLens}`,
