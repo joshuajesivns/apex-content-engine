@@ -21,7 +21,7 @@ cp .env.example .env        # then edit .env
 Set in `.env`:
 
 - `OPENAI_API_KEY` — required to generate (not needed for `--dry-run`)
-- `APEX_SITE_DIR` — absolute path to the website repo (e.g. the `southshift`
+- `APEX_SITE_DIR` — absolute path to the website repo (e.g. the `apex-engine`
   folder). Enables internal linking by scanning its blog/model/listing pages.
 - `APEX_SITE_URL` — public base URL for the internal hyperlinks
 - `APEX_MODEL` / `APEX_IMAGE_MODEL` / `APEX_IMAGE_SIZE` — optional overrides

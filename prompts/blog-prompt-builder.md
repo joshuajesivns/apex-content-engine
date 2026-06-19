@@ -2,7 +2,7 @@
 
 A fill-in template you run **through Claude** (no API key needed). Fill the
 `INPUTS` block, tell Claude "run the blog builder," and it returns a site-ready
-**MDX draft** you can drop into `southshift/src/content/blog/`.
+**MDX draft** you can drop into `apex-engine/src/content/blog/`.
 
 ---
 
@@ -95,7 +95,7 @@ Pair an image with analysis. Alternate side="left"/"right".
 
 **Rules when filling it:**
 - **Internal links:** use real, existing site paths only. Before running, scan
-  `southshift/src/content/blog`, `…/models`, and `src/data/listings.ts` for
+  `apex-engine/src/content/blog`, `…/models`, and `src/data/listings.ts` for
   current pages; link `/blog/<id>`, `/models/<id>`, `/listings/<id>`. Insert
   2–5 where genuinely relevant. Never invent a URL.
 - **Images:** one full-width hero near the top + 1–2 supporting `Figure`/`Split`,
@@ -124,4 +124,4 @@ Pair an image with analysis. Alternate side="left"/"right".
 
 Claude will scan the site for link targets, generate the draft, run the
 checklist, and return the MDX. Save it as
-`southshift/src/content/blog/<slug>.mdx`, swap the placeholder images, and push.
+`apex-engine/src/content/blog/<slug>.mdx`, swap the placeholder images, and push.
