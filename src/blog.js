@@ -1,6 +1,7 @@
 // Blog article generator. Combines a category (voice + focus) with a format
 // (structure + length) on top of the shared brand system prompt.
 import { systemPrompt } from './brand.js';
+import { seoRulesText } from './seo.js';
 import { slugify, titleCase } from './util.js';
 
 export function buildPrompt(ctx) {
@@ -30,9 +31,15 @@ ${optional}
 INTERNAL PAGES (link 2–5 of these EXACT paths where relevant; never invent a url):
 ${ctx.linkList}
 
+SEO / AI-OVERVIEW RULES (follow all — this is the priority):
+${seoRulesText()}
+
 FORMAT (this output becomes a Word document for review):
-- First line MUST be exactly: TITLE: <SEO-optimized title>
-- Then plain Markdown, no H1. Open with a short intro paragraph, then use ## for sections and ### for sub-sections.
+- First line MUST be exactly: TITLE: <SEO-optimized, keyword-first English title>
+- Then plain Markdown, no H1. Open with a short intro paragraph that states the main answer + primary keyword in the first sentence.
+- Right after the intro, add a "## Key Takeaways" section: 3–5 short, factual, standalone bullet points (with specific numbers where possible).
+- Then the body using ## for sections and ### for sub-sections (headings in English, keyword-bearing). Open each section answer-first.
+- Near the end, add a "## Frequently Asked Questions" section: 3–6 real buyer questions (mix English and Tagalog phrasings) each with a concise, standalone answer.
 - Suggested tags to weave in / declare: ${tags || '(add specific make/model tags)'}
 - Insert internal links as [anchor](path) using ONLY the paths above, where genuinely relevant.
 - Mark images on their own line: [[IMAGE: <kebab-id> | <caption> | <vivid photographic description>]] — one hero image + 1–2 supporting; unique kebab-case ids.

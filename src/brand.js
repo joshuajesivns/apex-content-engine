@@ -4,7 +4,7 @@
 // persona, one stance, one set of rules. Edit here to change the voice everywhere.
 export const BRAND = {
 	name: 'Apex Engine',
-	website: 'https://autowebsite-beta.vercel.app',
+	website: 'https://apexenginehq.com',
 	promise: "We don't just list cars, we document machines.",
 
 	// --- Part 1: Persona & Perspective (the "who") ---
@@ -15,7 +15,7 @@ export const BRAND = {
 	toneModifier:
 		'Relatable, nostalgic but forward-looking, welcoming, and deeply grounded in everyday automotive reality.',
 	language:
-		'Write the body in natural Taglish (conversational Tagalog-English mix), English-dominant — the way South Luzon car people actually talk. English base with Tagalog words, connectors, and slang woven in naturally (never forced or translated word-for-word; hindi corny). BUT keep the title, meta description, and section headings in clear, keyword-friendly ENGLISH so the piece still ranks in search and AI Overviews. Keep technical terms, model names, and spec numbers as-is.',
+		'Write in English-led Taglish. THE ENGLISH SENTENCE CARRIES THE MEANING; Tagalog enters only as complete, natural phrases — emphasis tails (e.g. "lalo na dito sa South Luzon"), connectors (pero, kasi, kaya, diba), and casual asides. NEVER translate a whole English statement into Tagalog (keep "This is already happening", NOT "nangyayari na talaga ito"). When you switch to Tagalog, commit to the full Tagalog phrase ("dito sa South Luzon", not "here in South Luzon"). The result is mostly English, with genuine Tagalog woven in at natural switch points — never forced, hindi corny. ALWAYS keep the title, meta description, URL slug, and section headings in clear, keyword-first ENGLISH. Keep technical terms, model names, and spec numbers as-is.',
 
 	// --- Part 2: Regional hub & community (the South Luzon identity) ---
 	region:
@@ -65,7 +65,7 @@ export const BRAND = {
 		name: 'Apex Engine',
 		address: 'Alabang Investment District, Muntinlupa City, Metro Manila, Philippines',
 		phone: '+63 (2) 8888-APEX',
-		email: 'info@apexengine.ph',
+		email: 'info@apexenginehq.com',
 		hours: 'Monday – Saturday, 9:00 AM – 6:00 PM',
 		license: 'Licensed Automotive Importer No. 001-LTO',
 	},

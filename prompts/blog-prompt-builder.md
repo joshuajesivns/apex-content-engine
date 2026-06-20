@@ -31,10 +31,13 @@ neighbor + the tech-savvy younger brother. A trusted peer at eye level, talking
 over coffee at a gas-station pitstop — never lecturing from an editorial tower.
 Relatable, nostalgic but forward-looking, grounded in everyday reality.
 
-- **Language:** write the **body in natural Taglish** (English-dominant — the way
-  South Luzon car people actually talk, never forced). Keep **titles, meta
-  descriptions, and section headings in keyword-friendly English** so it still
-  ranks. Technical terms, model names, and numbers stay as-is.
+- **Language (English-led Taglish):** the **English sentence carries the meaning**;
+  Tagalog enters only as **complete, natural phrases** — emphasis tails (*lalo na
+  dito sa South Luzon*), connectors (*pero, kasi, kaya, diba*), casual asides.
+  **Never** translate a whole English statement into Tagalog (keep "This is already
+  happening," not "nangyayari na talaga ito"). Mostly English, hindi corny. Keep
+  **title, meta, slug, and headings in keyword-first English**; technical terms,
+  model names, and numbers stay as-is.
 - **Region first:** filter through CALABARZON (Cavite, Laguna, Batangas, Rizal,
   Quezon) — "what does this mean for a driver here today?"
 - **Pain-points playbook:** for road/commuting issues, answer **Reality → Route
@@ -85,13 +88,19 @@ description: "1–2 sentence meta description"
 pubDate: "Month DD, YYYY"
 heroImage: "../../assets/blog-placeholder-1.jpg"
 tags: ["<category tags>", "Make", "Make Model"]
+faq:
+  - q: "A real buyer question (mix English + Tagalog, e.g. Magkano ang ... sa Pilipinas?)"
+    a: "Concise, standalone, English-led answer."
 ---
 
 import { Figure, Split, Gallery, Pullquote } from '../../components/editorial';
 import img1 from '../../assets/blog-placeholder-2.jpg';
 import img2 from '../../assets/blog-placeholder-3.jpg';
 
-Short, punchy intro in the brand voice (no H1 — the layout adds it).
+Short, punchy intro in the brand voice — state the main answer + primary keyword in the first sentence (no H1; the layout adds it).
+
+## Key Takeaways
+- 3–5 short, factual, standalone bullets (with numbers where possible).
 
 <Figure src={img1} width="full" caption="..." credit="Apex Engine" />
 {/* TODO: replace placeholder with a real photo in src/assets/blog/ */}
@@ -108,8 +117,11 @@ Pair an image with analysis. Alternate side.
 ...
 ```
 
-**Rules:**
+**Rules (AI-Overview priority):**
 - **Apply the chosen category's voice + the format's structure.**
+- **Answer-first:** open the article and each section with a direct, self-contained answer, then elaborate.
+- **Key Takeaways:** a `## Key Takeaways` bullet block right after the intro (3–5 factual, standalone points).
+- **FAQ:** 3–6 Q&A pairs in the `faq:` frontmatter (mix English + Tagalog questions). The site renders them as a visible FAQ **and** FAQPage schema automatically.
 - **Tags:** include the category's default tags plus specific make/model tags.
 - **Internal links:** real existing paths only. Before running, scan
   `apex-engine/src/content/blog`, `…/models`, and `src/data/listings.ts`; link
