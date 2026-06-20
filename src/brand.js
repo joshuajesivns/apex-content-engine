@@ -4,7 +4,7 @@
 // persona, one stance, one set of rules. Edit here to change the voice everywhere.
 export const BRAND = {
 	name: 'Apex Engine',
-	website: 'https://apexenginehq.com',
+	website: 'https://www.apexenginehq.com',
 	promise: "We don't just list cars, we document machines.",
 
 	// --- Part 1: Persona & Perspective (the "who") ---
